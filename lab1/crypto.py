@@ -3,12 +3,22 @@
 Name: Erincz Arnold
 
 """
-import utils
-
 
 #################
 # CAESAR CIPHER #
 #################
+
+def encrypt_caesar(plaintext):
+    return vigenereCipher(plaintext, 'C', 1)
+    
+
+def decrypt_caesar(ciphertext):
+    return vigenereCipher(ciphertext, 'C', -1)
+
+
+###################
+# VIGENERE CIPHER #
+###################
 
 def getLetterPositionObj(characters):
     charPosition = {}
@@ -36,9 +46,10 @@ def vigenereCipher(plaintext, key, sign):
         offset = charPosition[key[keyIndex]]
         keyIndex += 1
         currentIndex = charPosition[plaintext[i]]
-        rawIndex = currentIndex + sign * offset;
-        letterIndex = 0
 
+        rawIndex = currentIndex + sign * offset
+        letterIndex = 0
+        
         if sign >= 0:
             letterIndex = abs(len(characters) - rawIndex) if (rawIndex >= len(characters)) else rawIndex
         else:
@@ -48,55 +59,9 @@ def vigenereCipher(plaintext, key, sign):
 
     return message
 
-def encrypt_caesar(plaintext):
-    return vigenereCipher(plaintext, 'C', 1)
-    
-
-def decrypt_caesar(ciphertext):
-    """Decrypt a ciphertext using a Caesar cipher.
-
-    Add more implementation details here.
-
-    :param ciphertext: The message to decrypt.
-    :type ciphertext: str
-
-    :returns: The decrypted plaintext.
-    """
-    # Your implementation here.
-    raise NotImplementedError('decrypt_caesar is not yet implemented!')
-
-
-###################
-# VIGENERE CIPHER #
-###################
-
 def encrypt_vigenere(plaintext, keyword):
-    """Encrypt plaintext using a Vigenere cipher with a keyword.
-
-    Add more implementation details here.
-
-    :param plaintext: The message to encrypt.
-    :type plaintext: str
-    :param keyword: The key of the Vigenere cipher.
-    :type keyword: str
-
-    :returns: The encrypted ciphertext.
-    """
-    # Your implementation here.
-    raise NotImplementedError('encrypt_vigenere is not yet implemented!')
+    return vigenereCipher(plaintext, keyword, 1)
 
 
 def decrypt_vigenere(ciphertext, keyword):
-    """Decrypt ciphertext using a Vigenere cipher with a keyword.
-
-    Add more implementation details here.
-
-    :param ciphertext: The message to decrypt.
-    :type ciphertext: str
-    :param keyword: The key of the Vigenere cipher.
-    :type keyword: str
-
-    :returns: The decrypted plaintext.
-    """
-    # Your implementation here.
-    raise NotImplementedError('decrypt_vigenere is not yet implemented!')
+    return vigenereCipher(ciphertext, keyword, -1)
