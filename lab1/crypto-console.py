@@ -1,18 +1,11 @@
 #!/usr/bin/env python3
 """Run a console menu to interact with cryptographic ciphers.
-
-All cryptographic functionality is provided by the `crypto` module - this script
-simply provides a harness to interact with the ciphers.
-
-If you are a student, you shouldn't need to manually change this file, although
-you are free to tinker with it as you wish.
 """
 import random
 
 from crypto import (encrypt_caesar, decrypt_caesar,
                     encrypt_vigenere, decrypt_vigenere,
-                    generate_private_key, create_public_key,
-                    encrypt_mh, decrypt_mh)
+                    )
 
 HEADER = r"""
    ___________ __ __ ___   ______                 __                               __             ______                       __
