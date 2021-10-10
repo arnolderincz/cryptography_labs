@@ -5,7 +5,7 @@ import random
 
 from crypto import (encrypt_caesar, decrypt_caesar,
                     encrypt_vigenere, decrypt_vigenere,
-                    )
+                    encrypt_scytale, decrypt_scytale)
 
 HEADER = r"""
    ___________ __ __ ___   ______                 __                               __             ______                       __
@@ -25,7 +25,7 @@ HEADER = r"""
 def get_cryptosystem():
     """Ask the user which cryptosystem to use. Always returns a letter in `"CVM"`."""
     print("* Cryptosystem *")
-    return _get_selection("(C)aesar, (V)igenere or (M)erkle-Hellman? ", "CVM")
+    return _get_selection("(C)aesar, (V)igenere or (S)cytale? ", "CVS")
 
 
 def get_action():
@@ -138,30 +138,16 @@ def run_vigenere(encrypting, data):
     return (encrypt_vigenere if encrypting else decrypt_vigenere)(data, keyword)
 
 
-def run_merkle_hellman(encrypting, data):
-    """Run the Merkle-Hellman knapsack cryptosystem."""
-    action = get_action()
+def run_scytale(encrypting, data):
+    print("* Transform *")
+    data = clean_caesar(data)
+    
+    print("{}crypting {} using Scytale cipher...".format('En' if encrypting else 'De', data))
 
-    print("* Seed *")
-    seed = input("Set Seed [enter for random]: ")
-    if not seed:
-        random.seed()
-    else:
-        random.seed(seed)
-
-    print("* Building private key...")
-
-    private_key = generate_private_key()
-    public_key = create_public_key(private_key)
-
-    if encrypting:  # Encrypt
-        print("* Transform *")
-        chunks = encrypt_mh(data, public_key)
-        return ' '.join(map(str, chunks))
+    if encrypting:  # Encrypt  
+        return encrypt_scytale(data)
     else:  # Decrypt
-        chunks = [int(line.strip()) for line in data.split() if line.strip()]
-        print("* Transform *")
-        return decrypt_mh(chunks, private_key)
+        return decrypt_scytale(data)
 
 
 def run_suite():
@@ -186,7 +172,7 @@ def run_suite():
     commands = {
         'C': run_caesar,         # Caesar Cipher
         'V': run_vigenere,       # Vigenere Cipher
-        'M': run_merkle_hellman  # Merkle-Hellman Knapsack Cryptosystem
+        'S': run_scytale  # Merkle-Hellman Knapsack Cryptosystem
     }
     output = commands[system](encrypting, data)
     set_output(output)

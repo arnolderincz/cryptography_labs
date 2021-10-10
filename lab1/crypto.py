@@ -3,6 +3,7 @@
 Name: Erincz Arnold
 
 """
+import math
 
 #################
 # CAESAR CIPHER #
@@ -65,3 +66,29 @@ def encrypt_vigenere(plaintext, keyword):
 
 def decrypt_vigenere(ciphertext, keyword):
     return vigenereCipher(ciphertext, keyword, -1)
+
+###################
+# SCYTALE CIPHER #
+###################
+
+def scytale_algorithm(rows, text):
+    n = len(text)
+    columns = math.ceil(n / rows)    
+    cipher = ['+'] * (rows * columns)
+
+    additions = 0
+    for i in range(n):
+        if(text[i] == '+'):
+            additions += 1
+            continue
+        row = i // rows
+        col = i % rows
+        cipher[col * columns + row] = text[i]
+
+    return (''.join(cipher[:-additions]) if additions else ''.join(cipher))
+
+def encrypt_scytale(plaintext):
+    return scytale_algorithm(5, plaintext)
+
+def decrypt_scytale(cipher):
+    return scytale_algorithm(math.ceil(len(cipher) / 5), cipher)
