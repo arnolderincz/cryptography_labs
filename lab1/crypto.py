@@ -4,6 +4,7 @@ Name: Erincz Arnold
 
 """
 import math
+from typing import Collection
 
 #################
 # CAESAR CIPHER #
@@ -72,7 +73,11 @@ def decrypt_vigenere(ciphertext, keyword):
 ###################
 
 def scytale_algorithm(rows, text):
+    if (rows == 1):
+        return text
+    
     n = len(text)
+
     columns = math.ceil(n / rows)    
     cipher = ['+'] * (rows * columns)
 
@@ -92,3 +97,94 @@ def encrypt_scytale(plaintext):
 
 def decrypt_scytale(cipher):
     return scytale_algorithm(math.ceil(len(cipher) / 5), cipher)
+
+#####################
+# RAIL FENCE CIPHER #
+#####################
+
+def encrypt_rail_fence(rows, text):
+    if (rows == 1):
+        return text
+
+    n = len(text)
+    columns = int(n / (rows - 1))
+
+    matrix = create_rail_fence_matrix(n, columns, rows, text)
+
+    result = []
+    for i in range(0, rows):
+        for j in range(0, columns):
+            if matrix[i][j] != '#':
+                result.append(matrix[i][j])
+    
+    return ''.join(result)
+
+
+def decrypt_rail_fence(rows, cipher):
+    if (rows == 1):
+        return cipher
+
+    n = len(cipher)
+    columns = int(n / (rows - 1))
+
+    structure_matrix = create_rail_fence_matrix(n, columns, rows, cipher)
+ 
+    text_index = 0
+    for i in range(0, rows):
+        for j in range(0, columns):
+            if structure_matrix[i][j] != '#':
+                structure_matrix[i][j] = cipher[text_index]
+                text_index += 1
+        
+
+    result = []
+    dir_down = True
+    act_row = 0
+    act_col = 0
+
+    for i in range(0, n):
+        result.append(structure_matrix[act_row][act_col])
+
+        if (dir_down):
+            if(act_row == rows - 1):
+                act_col += 1
+                dir_down = False
+                act_row = rows - 2
+            else:
+                act_row += 1
+        else:
+            if (act_row == 0):
+                act_col += 1
+                dir_down = True
+                act_row += 1
+            else:
+                act_row -= 1
+    
+    return ''.join(result)
+
+def create_rail_fence_matrix(n, columns, rows, text):
+    matrix = [['#' for i in range(0, columns)] for j in range(0, rows)]
+
+    dir_down = True
+    act_row = 0
+    act_col = 0
+
+    for i in range(0, n):
+        matrix[act_row][act_col] = text[i]
+
+        if (dir_down):
+            if(act_row == rows - 1):
+                act_col += 1
+                dir_down = False
+                act_row = rows - 2
+            else:
+                act_row += 1
+        else:
+            if (act_row == 0):
+                act_col += 1
+                dir_down = True
+                act_row += 1
+            else:
+                act_row -= 1
+
+    return matrix

@@ -3,7 +3,7 @@
 """
 import random
 
-from crypto import (encrypt_caesar, decrypt_caesar,
+from crypto import (decrypt_rail_fence, encrypt_caesar, decrypt_caesar, encrypt_rail_fence,
                     encrypt_vigenere, decrypt_vigenere,
                     encrypt_scytale, decrypt_scytale)
 
@@ -25,7 +25,7 @@ HEADER = r"""
 def get_cryptosystem():
     """Ask the user which cryptosystem to use. Always returns a letter in `"CVM"`."""
     print("* Cryptosystem *")
-    return _get_selection("(C)aesar, (V)igenere or (S)cytale? ", "CVS")
+    return _get_selection("(C)aesar, (V)igenere, (S)cytale or (R)ail Fence? ", "CVSR")
 
 
 def get_action():
@@ -149,6 +149,17 @@ def run_scytale(encrypting, data):
     else:  # Decrypt
         return decrypt_scytale(data)
 
+def run_rail_fence(encrypting, data):
+    print("* Transform *")
+    data = clean_caesar(data)
+    
+    print("{}crypting {} using Rail Fence cipher...".format('En' if encrypting else 'De', data))
+
+    if encrypting:  # Encrypt  
+        return encrypt_rail_fence(3, data)
+    else:  # Decrypt
+        return decrypt_rail_fence(3, data)
+
 
 def run_suite():
     """Run a single iteration of the cryptography suite.
@@ -172,7 +183,8 @@ def run_suite():
     commands = {
         'C': run_caesar,         # Caesar Cipher
         'V': run_vigenere,       # Vigenere Cipher
-        'S': run_scytale  # Merkle-Hellman Knapsack Cryptosystem
+        'S': run_scytale,         # Scytale Cipher
+        'R': run_rail_fence      # Rail Fence Cipher
     }
     output = commands[system](encrypting, data)
     set_output(output)
