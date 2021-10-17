@@ -4,7 +4,7 @@ Name: Erincz Arnold
 
 """
 import math
-from typing import Collection
+from typing import Collection, Match
 
 #################
 # CAESAR CIPHER #
@@ -188,3 +188,62 @@ def create_rail_fence_matrix(n, columns, rows, text):
                 act_row -= 1
 
     return matrix
+
+def vigenere_code_breaker(cipher, key_list):
+    if len(key_list) == 0:
+        return 'ERR: Possible key list empty'
+    if len(cipher) == 0:
+        return 'ERR: Cipher text empty'
+
+    possible_key = key_list[0]
+    max_accuracy = 0
+
+    usual_words = get_usual_words()
+
+    for key in key_list:
+        decrypted_text = decrypt_vigenere(cipher, key)
+
+        current_accuracy = english_accuracy(decrypted_text, usual_words)
+
+        if (current_accuracy > max_accuracy):
+            max_accuracy = current_accuracy
+            possible_key = key
+
+        print(key, current_accuracy, decrypted_text)
+    
+    return (possible_key, max_accuracy)
+
+def get_usual_words():
+    f = open('./dict/words.txt', 'r')
+
+    words = []
+
+    for line in f:
+        words.append(line.replace('\n', '').upper())
+    f.close()
+
+    return words
+
+def is_english(word, usual_words):
+    l = 0
+    r = len(usual_words) - 1
+
+    while(l <= r):
+        m = math.floor((l + r) / 2)
+        if(word == usual_words[m]):
+            return True
+        elif word < usual_words[m]:
+            r = m - 1
+        else:
+            l = m + 1
+    return False
+
+def english_accuracy(decrypted_text, usual_words):
+    decrypted_words = decrypted_text.split()
+    total_words = len(decrypted_words)
+    decrypted_english = 0
+    for word in decrypted_words:
+        if(is_english(word, usual_words)):
+            decrypted_english += 1
+    
+    return decrypted_english / total_words

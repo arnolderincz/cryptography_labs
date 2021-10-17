@@ -1,0 +1,22 @@
+Caesar Ciper
+============
+I implemented the encryption and decryption using the fact that Caesar Cipher is a Vigenere Cipher with the key 'C'.
+
+Vigenere Cipher
+===============
+I made a general algorithm that can be used both for encrypting and decrypting. The difference is the operation sign, in encryption I add the offset and in decryption I subtract it.
+
+Scytale Cipher
+==============
+I put the text characters in a matrix with 5 rows simulating the scytale. In the case when the text wasn't long enough for a perfect matrix I added '*'(a character that is not in my dictionary) so, when I decrypt I know to skip the character.
+
+Rail Fence Cipher
+=================
+In the implementation I condesed the original matrix that I would obtain, to save some space, like this:
+C * * * C * *        C C *
+* C * C * C *   =>   C C C    and I find a rule that fits this implementation. In the decryption
+* * C * * * C        C * C    first I obtain the structure of the original matrix and then I recreate it. After I read the matrix in the same order that I used to encryption.
+
+Vigenere Cipher Codebreaker
+===========================
+Here I simply try from a list of keys all of them to find the one from what I obtain the decrypted message with the most english words.
