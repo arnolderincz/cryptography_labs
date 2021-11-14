@@ -1,11 +1,11 @@
+from Generators.BlumBlumShub import BlumBlumShub
 from Generators.Solitaire import Solitaire
-
 
 class Config:
   def __init__(self):
     self.generator = None
     self.key = None
-    with open('./config.txt') as file:
+    with open('./configB.txt') as file:
       type = file.readline().strip()
 
       if type == 'solitaire':
@@ -14,6 +14,12 @@ class Config:
         self.key = [int(i) for i in deck]
         
         self.generator = Solitaire(self.key)
+      elif type == 'bbs':
+        line = file.readline().strip()
+        seed = int(line.split()[0])
+        self.key = seed
+
+        self.generator = BlumBlumShub(seed)
 
   def get_generator(self):
     return self.generator

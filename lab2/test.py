@@ -5,5 +5,5 @@ config = Config()
 cipher = Cipher(config.get_generator(), config.get_key())
 
 encrypted = cipher.encrypt('This is really nice', 0)
-print('Encrypted {}', encrypted)
+print("Encrypted {}", encrypted)
 print('Decrypted {}', cipher.decrypt(encrypted, cipher.get_offset()- len(encrypted)))
