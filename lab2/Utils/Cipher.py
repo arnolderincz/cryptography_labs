@@ -8,7 +8,7 @@ class Cipher:
     return self.offset
 
   def encrypt(self, plain_text, offset):
-    message = bytes(plain_text, 'ascii')
+    message = bytes(plain_text, 'utf-8')
     return self.algorithm(message, offset)
   
   def decrypt(self, cipher, offset):

@@ -5,7 +5,7 @@ class Config:
   def __init__(self):
     self.generator = None
     self.key = None
-    with open('./configB.txt') as file:
+    with open('./configS.txt') as file:
       type = file.readline().strip()
 
       if type == 'solitaire':

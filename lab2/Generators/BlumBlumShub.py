@@ -1,7 +1,7 @@
 class BlumBlumShub:
   def __init__(self, seed):
-    self.p = 7043
-    self.q = 4271
+    self.p = 11
+    self.q = 23
     self.seed = seed
     self.N = self.p * self.q
     self.current = (seed ** 2) % self.N
@@ -25,7 +25,7 @@ class BlumBlumShub:
 
   def reset_adjust(self, start):
     self.current = (self.seed ** 2) % self.N
-    
+
     for i in range(start):
       byte = []
       for j  in range(8):
